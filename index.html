@@ -34,7 +34,7 @@
 
     .message {
       position: absolute;
-      top: 40%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #fff;
@@ -57,35 +57,39 @@
         transform: translate(-50%, -50%) scale(1);
       }
     }
-
-    audio {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-    }
   </style>
 </head>
 <body>
   <h1>Happy Birthday to You Ade Septya Damayanti</h1>
   <canvas id="birthday"></canvas>
 
-  <!-- Audio element with autoplay and loop -->
-  <audio controls autoplay loop>
+  <!-- Audio autoplay -->
+  <audio controls autoplay loop hidden>
     <source src="https://soundcloud.com/ahmad-maulana-361468829/lagu-ulang-tahun-versi-korea?si=6ccf04f0da2c476190bfab8721d23bc6&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" type="audio/mpeg">
     Browser kamu tidak mendukung elemen audio.
   </audio>
 
+  <!-- Pesan ucapan -->
   <div class="message">
-    Semoga di tahun ini semua yang telah dicapai menjadi berkah dalam hidup, semua yang diperjuangkan dipermudah, dan semua yang diikhtiarkan dapat dipetik nanti. Maaf ya aku nggak bisa hadir langsung untuk merayakan. Maaf kalau aku belum bisa kasih sekarang, tapi nanti kalau kita ketemu, insya Allah aku kasih banyak. Semangat terus, jangan dengarkan kata orang tentang diri Ade yang sekarang, tapi lakukan terus hal-hal terbaik yang bisa Ade lakukan. Aku percaya Ade mampu. Okay?
+    Semoga di tahun ini semua yang telah dicapai menjadi berkah dalam hidup, semua yang diperjuangkan dimudahkan, dan semua yang diikhtiarkan dapat dipetik nanti. Maaf aku tidak bisa hadir langsung untuk merayakan. Semangat terus, jangan dengerin kata orang tentang diri Ade, tapi lakukan terus hal-hal terbaik. Aku percaya Ade mampu. Okay.
   </div>
 
+  <!-- Iframe YouTube video autoplay -->
+  <iframe hidden width="560" height="315" 
+    src="https://www.youtube.com/watch?v=W9UW6y3ccBc?autoplay=1" 
+    allow="autoplay" 
+    title="YouTube video player" 
+    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+
   <script>
+    // helper functions
     const PI2 = Math.PI * 2;
     const random = (min, max) => Math.random() * (max - min + 1) + min | 0;
-    const timestamp = () => new Date().getTime();
+    const timestamp = _ => new Date().getTime();
 
+    // container
     class Birthday {
       constructor() {
         this.resize();
@@ -95,19 +99,29 @@
 
       resize() {
         this.width = canvas.width = window.innerWidth;
+        let center = this.width / 2 | 0;
+        this.spawnA = center - center / 4 | 0;
+        this.spawnB = center + center / 4 | 0;
+
         this.height = canvas.height = window.innerHeight;
-        this.spawnA = this.width / 2 - this.width / 4;
-        this.spawnB = this.width / 2 + this.width / 4;
         this.spawnC = this.height * 0.1;
         this.spawnD = this.height * 0.5;
       }
 
       onClick(evt) {
-        let x = evt.clientX || (evt.touches && evt.touches[0].pageX);
-        let y = evt.clientY || (evt.touches && evt.touches[0].pageY);
+        let x = evt.clientX || evt.touches && evt.touches[0].pageX;
+        let y = evt.clientY || evt.touches && evt.touches[0].pageY;
 
-        for (let i = 0; i < random(3, 5); i++) {
-          this.fireworks.push(new Firework(random(this.spawnA, this.spawnB), this.height, x, y, random(0, 360), random(30, 110)));
+        let count = random(3, 5);
+        for (let i = 0; i < count; i++) {
+          this.fireworks.push(new Firework(
+            random(this.spawnA, this.spawnB),
+            this.height,
+            x,
+            y,
+            random(0, 260),
+            random(30, 110)
+          ));
         }
 
         this.counter = -1;
@@ -121,9 +135,16 @@
         ctx.globalCompositeOperation = 'lighter';
         for (let firework of this.fireworks) firework.update(delta);
 
-        this.counter += delta * 3;
+        this.counter += delta * 3; // each second
         if (this.counter >= 1) {
-          this.fireworks.push(new Firework(random(this.spawnA, this.spawnB), this.height, random(0, this.width), random(this.spawnC, this.spawnD), random(0, 360), random(30, 110)));
+          this.fireworks.push(new Firework(
+            random(this.spawnA, this.spawnB),
+            this.height,
+            random(0, this.width),
+            random(this.spawnC, this.spawnD),
+            random(0, 360),
+            random(30, 110)
+          ));
           this.counter = 0;
         }
 
@@ -151,15 +172,17 @@
         if (Math.abs(xDiff) > 3 || Math.abs(yDiff) > 3) {
           this.x += xDiff * 2 * delta;
           this.y += yDiff * 2 * delta;
-          this.history.push({ x: this.x, y: this.y });
 
+          this.history.push({ x: this.x, y: this.y });
           if (this.history.length > 20) this.history.shift();
+
         } else {
           if (this.offsprings && !this.madeChilds) {
             let babies = this.offsprings / 2;
             for (let i = 0; i < babies; i++) {
-              let targetX = this.x + this.offsprings * Math.cos(PI2 * i / babies);
-              let targetY = this.y + this.offsprings * Math.sin(PI2 * i / babies);
+              let targetX = this.x + this.offsprings * Math.cos(PI2 * i / babies) | 0;
+              let targetY = this.y + this.offsprings * Math.sin(PI2 * i / babies) | 0;
+
               birthday.fireworks.push(new Firework(this.x, this.y, targetX, targetY, this.shade, 0));
             }
           }
@@ -169,7 +192,7 @@
 
         if (this.history.length === 0) this.dead = true;
         else if (this.offsprings) {
-          for (let i = 0; i < this.history.length; i++) {
+          for (let i = 0; this.history.length > i; i++) {
             let point = this.history[i];
             ctx.beginPath();
             ctx.fillStyle = 'hsl(' + this.shade + ',100%,' + i + '%)';
@@ -187,6 +210,7 @@
 
     let canvas = document.getElementById('birthday');
     let ctx = canvas.getContext('2d');
+
     let then = timestamp();
     let birthday = new Birthday();
 
@@ -196,8 +220,10 @@
 
     (function loop() {
       requestAnimationFrame(loop);
+
       let now = timestamp();
       let delta = now - then;
+
       then = now;
       birthday.update(delta / 1000);
     })();
