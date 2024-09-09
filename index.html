@@ -83,15 +83,15 @@
   <h1>Happy Birthday to You Ade Septya Damayanti</h1>
   <canvas id="birthday"></canvas>
   
-<audio controls autoplay loop>
+<audio id="background-audio" loop>
   <source src="https://g.top4top.io/m_31747cn5g1.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
-  document.addEventListener('click', function() {
+<!--   document.addEventListener('click', function() {
   var audio = document.querySelector('audio');
   audio.play();
-});
+}); -->
 
   <!-- Pesan ucapan -->
   <div class="message">
@@ -252,5 +252,13 @@
       birthday.update(delta / 1000);
     })();
   </script>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    var audio = document.getElementById('background-audio');
+    audio.play().catch(error => {
+      console.log('Audio autoplay failed:', error);
+    });
+  });
+</script>
 </body>
 </html>
