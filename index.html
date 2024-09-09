@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday Fireworks</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
     body {
       margin: 0;
       background: #020202;
@@ -17,27 +19,57 @@
 
     h1 {
       position: absolute;
-      top: 20%;
+      top: 10%;
       left: 50%;
       transform: translate(-50%, -50%);
       color: #fff;
-      font-family: "Source Sans Pro";
+      font-family: 'Source Sans Pro', sans-serif;
       font-size: 5em;
       font-weight: 900;
       -webkit-user-select: none;
       user-select: none;
+      text-align: center;
+    }
+
+    .message {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2em;
+      max-width: 80%;
+      text-align: center;
+      opacity: 0;
+      animation: write 5s forwards ease-in-out;
+    }
+
+    @keyframes write {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
   </style>
 </head>
 <body>
-  <h1 style="text-align: center; font-size: 3vw; color: #fff; font-weight: 900; font-family: 'Source Sans Pro'; user-select: none; margin-top: 20vh;">Happy Birthday to You Ade Septya Damayanti</h1>
+  <h1>Happy Birthday to You Ade Septya Damayanti</h1>
   <canvas id="birthday"></canvas>
 
   <!-- Tambahkan audio dengan autoplay dan loop -->
-<audio controls autoplay loop>
-  <source src="https://drive.google.com/uc?export=download&id=1ME7O8a9hNwOmOLTdhxaqaR3WxcyxkiuT" type="audio/mpeg">
-  Browser kamu tidak mendukung elemen audio.
-</audio>
+  <audio controls autoplay loop>
+    <source src="https://drive.google.com/uc?export=download&id=1ME7O8a9hNwOmOLTdhxaqaR3WxcyxkiuT" type="audio/mpeg">
+    Browser kamu tidak mendukung elemen audio.
+  </audio>
+
+  <div class="message">
+    Semoga di Tahun ini semua yang telah di capai menjadi berkah di dalam hidup, semua yang di perjuangkan di permudah kelak dan semua yang di ikhtiarkan dapat di petik nanti. Maaf yaa aku enggak bisa hadir langsung buat ngerayain.. Maaf kalau aku juga belum bisa kasi sekarang, tapi nanti kalau kita ketemu insyallah aku kasi yg banyak.. Semangat terus, jangan dengerin kata orang tentang diri Ade yang sekarang, tapi lakukan terus hal-hal terbaik yang bisa Ade lakuin.. Aku percaya kalau Ade itu mampu.. okay.
+  </div>
 
   <script>
     // helper functions
